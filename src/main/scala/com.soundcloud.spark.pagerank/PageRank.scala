@@ -121,7 +121,9 @@ object PageRank {
      * probability mass plus the teleport probability.
      */
     def calculateVertexUpdate(incomingSum: Value): Value =
-      ((1 - teleportProb) * incomingSum) + (teleportProb / numVertices)
+      ((1 - teleportProb) * incomingSum) + scala.math.exp(
+        scala.math.log(teleportProb) - scala.math.log(numVertices)
+      )
 
     /**
      * Calculates the dangling node delta update, after the normal vertex
@@ -129,7 +131,9 @@ object PageRank {
      * node we are updating.
      */
     def calculateDanglingVertexUpdate(startingValue: Value): Value =
-      (1 - teleportProb) * (1.0 / (numVertices - 1)) * startingValue
+      (1 - teleportProb) * scala.math.exp(
+        scala.math.log(1.0) - scala.math.log(numVertices - 1)
+      ) * startingValue
 
     /**
      * Closure that updates the PageRank value of a node based on the incoming

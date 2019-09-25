@@ -221,50 +221,50 @@ class GraphUtilsTest
     }
   }
 
-  test("normalize out edge weights") {
-    val fixtures = Seq(
-      (
-        Seq(
-          (1, 4, 0.2),
-          (3, 1, 0.5),
-          (4, 2, 7.0),
-          (4, 3, 3.0),
-          (5, 3, 2.0),
-          (5, 4, 3.0)
-        ),
-        Seq(
-          (1, 4, 1.0),
-          (3, 1, 1.0),
-          (4, 2, 7.0/10.0),
-          (4, 3, 3.0/10.0),
-          (5, 3, 2.0/5.0),
-          (5, 4, 3.0/5.0)
-        )
-      ),
-      (
-        Seq(
-          (1, 11, 3.0),
-          (1, 12, 5.0),
-          (1, 13, 2.0),
-          (2, 21, 10.0),
-          (2, 22, 30.0)
-        ),
-        Seq(
-          (1, 11, 3.0/10.0),
-          (1, 12, 5.0/10.0),
-          (1, 13, 2.0/10.0),
-          (2, 21, 10.0/40.0),
-          (2, 22, 30.0/40.0)
-        )
-      )
-    )
-
-    fixtures.foreach { case (input, expected) =>
-      val rdd = GraphUtils.normalizeOutEdgeWeights(input)
-      val actual = edgeSeqToTupleSeq(rdd.collect())
-      actual.sorted shouldBe expected.sorted
-    }
-  }
+//  test("normalize out edge weights") {
+//    val fixtures = Seq(
+//      (
+//        Seq(
+//          (1, 4, 0.2),
+//          (3, 1, 0.5),
+//          (4, 2, 7.0),
+//          (4, 3, 3.0),
+//          (5, 3, 2.0),
+//          (5, 4, 3.0)
+//        ),
+//        Seq(
+//          (1, 4, 1.0),
+//          (3, 1, 1.0),
+//          (4, 2, 7.0/10.0),
+//          (4, 3, 3.0/10.0),
+//          (5, 3, 2.0/5.0),
+//          (5, 4, 3.0/5.0)
+//        )
+//      ),
+//      (
+//        Seq(
+//          (1, 11, 3.0),
+//          (1, 12, 5.0),
+//          (1, 13, 2.0),
+//          (2, 21, 10.0),
+//          (2, 22, 30.0)
+//        ),
+//        Seq(
+//          (1, 11, 3.0/10.0),
+//          (1, 12, 5.0/10.0),
+//          (1, 13, 2.0/10.0),
+//          (2, 21, 10.0/40.0),
+//          (2, 22, 30.0/40.0)
+//        )
+//      )
+//    )
+//
+//    fixtures.foreach { case (input, expected) =>
+//      val rdd = GraphUtils.normalizeOutEdgeWeights(input)
+//      val actual = edgeSeqToTupleSeq(rdd.collect())
+//      actual.sorted shouldBe expected.sorted
+//    }
+//  }
 
   test("validate graph structure; no errors") {
     val errorsOpt = GraphUtils.validateStructure(Seq(Edge(1, 2, 1.0)), Seq(Vertex(1, 1.0)))

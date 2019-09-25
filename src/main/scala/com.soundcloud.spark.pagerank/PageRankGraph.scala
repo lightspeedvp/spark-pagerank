@@ -36,7 +36,7 @@ final case class PageRankGraph(
       if (math.abs(totalDelta) <= EPS)
         return updatedVertices
 
-      val perNodeDelta = totalDelta / this.numVertices
+      val perNodeDelta = scala.math.exp( scala.math.log(totalDelta) - scala.math.log(this.numVertices))
       updatedVertices
         .map { case (id, meta) =>
           (id, meta.withNewValue(meta.value + perNodeDelta))
@@ -140,7 +140,7 @@ object PageRankGraph {
 
     // count vertices, determine the uniform distribution prior, attach to all vertices
     val numVertices = allIds.count()
-    val prior = 1.0 / numVertices
+    val prior = scala.math.exp(scala.math.log(1.0)  - scala.math.log(numVertices))
     val vertices = allIds.map(id => (id, prior))
 
     // tag vertices with dangles

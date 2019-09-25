@@ -110,7 +110,7 @@ object GraphUtils {
       .map(_.toOutEdgePair)
       .join(sums)
       .map { case (srcId, (outEdge, weightSum)) =>
-        Edge(srcId, outEdge.dstId, outEdge.weight / weightSum)
+        Edge(srcId, outEdge.dstId, scala.math.exp( scala.math.log(outEdge.weight) - scala.math.log(weightSum)) )
       }
   }
 
