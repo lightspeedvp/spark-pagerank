@@ -121,7 +121,7 @@ object PageRank {
      * probability mass plus the teleport probability.
      */
     def calculateVertexUpdate(incomingSum: Value): Value =
-      ((1 - teleportProb) * incomingSum) + scala.math.exp(
+      scala.math.exp( scala.math.log(1 - teleportProb) +  scala.math.log(incomingSum) ) + scala.math.exp(
         scala.math.log(teleportProb) - scala.math.log(numVertices)
       )
 
@@ -131,9 +131,9 @@ object PageRank {
      * node we are updating.
      */
     def calculateDanglingVertexUpdate(startingValue: Value): Value =
-      (1 - teleportProb) * scala.math.exp(
+      scala.math.exp( scala.math.log(1 - teleportProb) +
         scala.math.log(1.0) - scala.math.log(numVertices - 1)
-      ) * startingValue
+       + scala.math.log(startingValue) )
 
     /**
      * Closure that updates the PageRank value of a node based on the incoming
@@ -172,7 +172,7 @@ object PageRank {
       .join(vertices)
       .map { case(_, (edge, vMeta)) =>
         // sends a proportional amount of mass to the destination
-        (edge.dstId, vMeta.value * edge.weight)
+        (edge.dstId, scala.math.exp( scala.math.log(vMeta.value) + scala.math.log(edge.weight)) )
       }
       .reduceByKey(_ + _)
 
